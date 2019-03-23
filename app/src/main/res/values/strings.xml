@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">记事本</string>
+    <string name="publish_note">发布记事</string>
+    <string name="publish_note_label">内容</string>
+    <string name="publish_btn">发布</string>
+    <string name="empty_tip">还没发布过记事，赶快点击右下角加号试试吧</string>
+</resources>

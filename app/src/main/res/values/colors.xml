@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="tool_bg_color">#267ace</color>
+
+
+    <!--白色到透明色渐变-->
+    <color name="white">#FFffffff</color>
+    <color name="white_transparency_0">#00ffffff</color>
+    <color name="white_transparency_100">#1Affffff</color>
+    <color name="white_transparency_150">#26ffffff</color>
+    <color name="white_transparency_200">#33ffffff</color>
+    <color name="white_transparency_250">#40ffffff</color>
+    <color name="white_transparency_300">#4Dffffff</color>
+    <color name="white_transparency_350">#5Affffff</color>
+    <color name="white_transparency_400">#66ffffff</color>
+    <color name="white_transparency_450">#73ffffff</color>
+    <color name="white_transparency_50">#0Dffffff</color>
+    <color name="white_transparency_500">#80ffffff</color>
+    <color name="white_transparency_550">#8Cffffff</color>
+    <color name="white_transparency_600">#9Affffff</color>
+    <color name="white_transparency_650">#A6ffffff</color>
+    <color name="white_transparency_700">#B4ffffff</color>
+    <color name="white_transparency_750">#C0ffffff</color>
+    <color name="white_transparency_800">#CDffffff</color>
+    <color name="white_transparency_850">#D9ffffff</color>
+    <color name="white_transparency_900">#E6ffffff</color>
+    <color name="white_transparency_950">#F3ffffff</color>
+</resources>
+
+
