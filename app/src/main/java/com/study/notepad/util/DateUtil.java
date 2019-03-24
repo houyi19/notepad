@@ -17,4 +17,12 @@ public class DateUtil {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(new Date(Long.valueOf(seconds + "000")));
     }
+
+    //    转换成日期时间yyyy-MM-dd HH:mm:ss;
+    public static String date2string(Date date) {
+        String strDate = "";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        strDate = sdf.format(date);
+        return strDate;
+    }
 }

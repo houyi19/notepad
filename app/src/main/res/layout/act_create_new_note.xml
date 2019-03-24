@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/act_publish_content_new"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_100"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <EditText
+        android:id="@+id/act_publish_new_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:hint="请输入标题"
+        android:padding="16dp"
+        android:textColor="@color/grey_700"
+        android:textSize="18sp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp">
+
+        <TextView
+            android:id="@+id/act_publish_new_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:textColor="@color/grey_500"
+            android:textSize="14sp"
+            tools:text="2018-11-16" />
+
+        <TextView
+            android:id="@+id/act_publish_new_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/grey_500"
+            android:textSize="14sp"
+            tools:text="默认笔记" />
+    </RelativeLayout>
+
+    <com.sendtion.xrichtext.RichTextEditor
+        android:id="@+id/act_publish_new_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:rt_editor_image_bottom="10"
+        app:rt_editor_image_height="500"
+        app:rt_editor_text_color="@color/grey_900"
+        app:rt_editor_text_init_hint="在这里输入内容"
+        app:rt_editor_text_line_space="6dp"
+        app:rt_editor_text_size="16sp" />
+
+</LinearLayout>

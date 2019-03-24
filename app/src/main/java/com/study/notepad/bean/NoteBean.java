@@ -12,6 +12,8 @@ public class NoteBean implements Serializable {
     //    id号，标识唯一值
     private int id;
 
+    //表示记事的标题
+    private String title;
     //    表示记事内容；
     private String content;
     //    表示图片的存储地址；
@@ -28,7 +30,8 @@ public class NoteBean implements Serializable {
     private long mLength; // length of recording in seconds
     private String mTime; // date/time of the recording
 
-    public NoteBean(String content, String picUrl, String time, int type) {
+    public NoteBean(String title,String content, String picUrl, String time, int type) {
+        this.title = title;
         this.content = content;
         this.picUrl = picUrl;
         this.time = time;
@@ -54,6 +57,14 @@ public class NoteBean implements Serializable {
 
     public String getmName() {
         return mName;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public void setmName(String mName) {
@@ -124,6 +135,7 @@ public class NoteBean implements Serializable {
     public String toString() {
         return "NoteBean{" +
                 "id=" + id +
+                ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", picUrl='" + picUrl + '\'' +
                 ", time='" + time + '\'' +
@@ -132,7 +144,7 @@ public class NoteBean implements Serializable {
                 ", mFilePath='" + mFilePath + '\'' +
                 ", mId=" + mId +
                 ", mLength=" + mLength +
-                ", mTime=" + mTime +
+                ", mTime='" + mTime + '\'' +
                 '}';
     }
 }

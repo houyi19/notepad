@@ -19,6 +19,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String CREATE_NOTE_DB = "create table note(" +
             "id integer primary key autoincrement," +
+            "title text ," +
             "content text," +
             "picUrl varchar(20)," +
             "time varchar(20))";

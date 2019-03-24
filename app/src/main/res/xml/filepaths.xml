@@ -1,3 +1,4 @@
 <paths>
     <external-path path="notePadRecorder/" name="notePadRecorder" />
+    <external-path name="my_images" path="Pictures"/>
 </paths>

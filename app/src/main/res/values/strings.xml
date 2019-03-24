@@ -25,4 +25,14 @@
     <string name="send_to">Send To</string>
     <string name="dialog_action_cancel">取消</string>
     <string name="dialog_title_options">设置</string>
+    <string name="dialog_action_ok">确认</string>
+    <string name="dialog_action_yes">Yes</string>
+    <string name="dialog_action_no">No</string>
+    <string name="dialog_title_delete">确认删除...</string>
+    <string name="dialog_text_delete">确认删除该文件吗?</string>
+
+
+    <!-- Toasts -->
+    <string name="toast_file_delete">%1$s successfully deleted</string>
+    <string name="toast_file_exists">The file %1$s already exists. Please choose a different file name.</string>
 </resources>

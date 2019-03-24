@@ -33,8 +33,8 @@ public class HolderSpeechNote extends HolderBase<NoteBean> {
 
     }
 
-    @Override
-    public void bindHolder(final NoteBean noteBean, final Object object) {
+
+    public void bindHolder(final NoteBean noteBean, final Object object, final int pos) {
         super.bindHolder(noteBean, object);
         long minutes = TimeUnit.MILLISECONDS.toMinutes(noteBean.getmLength());
         long seconds = TimeUnit.MILLISECONDS.toSeconds(noteBean.getmLength())
@@ -53,7 +53,7 @@ public class HolderSpeechNote extends HolderBase<NoteBean> {
         mCardContent.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                BaseFileDialog.newInstance().createBaseDialog(mContext,noteBean);
+                BaseFileDialog.newInstance().createBaseDialog(mContext,noteBean,pos);
                 return false;
             }
         });
