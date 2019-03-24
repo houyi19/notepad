@@ -30,7 +30,7 @@ public class PermissionGuideUtil implements onRequestPermission {
 
     private ArrayList<String> mPermissionList = new ArrayList<>();
 
-    private String[] mPermissions = new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA};
+    private String[] mPermissions = new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CAMERA,Manifest.permission.RECORD_AUDIO};
 
     public void GrantPermission(@NonNull Context mContext, @NonNull Activity mAct) {
 

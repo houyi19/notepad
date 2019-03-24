@@ -27,8 +27,9 @@ public class NoteMainActivity extends AppCompatActivity implements View.OnClickL
     private FloatingActionButton mAddCharContent;
     //    发布语音记事的按钮
     private FloatingActionButton mAddSpeechContent;
-//    获取数据库的内容
+    //    获取文字记事本数据库的内容
     private ArrayList<NoteBean>mModels =  new ArrayList<>();
+    private ArrayList<NoteBean>mSpeechModels = new ArrayList<>();
 
     private DataBaseUtil dataBaseUtil = new DataBaseUtil(this);
 
@@ -60,7 +61,12 @@ public class NoteMainActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     protected void onResume() {
+        Logger.i("onResume");
         mModels = dataBaseUtil.queryContent();
+        mSpeechModels = dataBaseUtil.querySpeechContent();
+        for (int i = 0; i< mSpeechModels.size();i++) {
+            mModels.add(mSpeechModels.get(i));
+        }
         if (!mModels.isEmpty()) {
             FragmentManagerUtil.replaceFragment(getSupportFragmentManager(),R.id.main_content, NoteContentFragment.newInstance(mModels));
         } else {
@@ -76,12 +82,6 @@ public class NoteMainActivity extends AppCompatActivity implements View.OnClickL
         mTitleBar = findViewById(R.id.title_bar);
         mAddCharContent.setOnClickListener(this);
         mAddSpeechContent.setOnClickListener(this);
-        mModels = dataBaseUtil.queryContent();
-        if (!mModels.isEmpty()) {
-            FragmentManagerUtil.replaceFragment(getSupportFragmentManager(),R.id.main_content, NoteContentFragment.newInstance(mModels));
-        } else {
-            FragmentManagerUtil.replaceFragment(getSupportFragmentManager(),R.id.main_content, EmptyFragment.newInstance());
-        }
     }
 
     //    初始化相关配置(例如权限的配置）

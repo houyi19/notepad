@@ -4,9 +4,10 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="tool_bg_color">#267ace</color>
-
+    <color name="accent">#FFC107</color>
 
     <!--白色到透明色渐变-->
+    <color name="transparent">#00000000</color>
     <color name="white">#FFffffff</color>
     <color name="white_transparency_0">#00ffffff</color>
     <color name="white_transparency_100">#1Affffff</color>

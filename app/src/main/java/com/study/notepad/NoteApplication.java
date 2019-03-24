@@ -18,7 +18,7 @@ public class NoteApplication extends Application {
         super.onCreate();
 
 //      debug模式开启log模式，初始化第三方log库文件；
-        if (true) {
+        if (isDebug) {
             Logger.addLogAdapter(new AndroidLogAdapter());
         }
     }

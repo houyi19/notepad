@@ -1,7 +1,28 @@
 <resources>
     <string name="app_name">记事本</string>
     <string name="publish_note">发布记事</string>
+    <string name="publish_speech_note">录音记事</string>
     <string name="publish_note_label">内容</string>
     <string name="publish_btn">发布</string>
     <string name="empty_tip">还没发布过记事，赶快点击右下角加号试试吧</string>
+
+    <string name="record_prompt">点击下方录音按钮开始录音</string>
+    <string name="pause_recording_button">暂停</string>
+    <string name="notification_recording">正在录音</string>
+    <string name="record_in_progress">录音</string>
+    <string name="default_file_name">Notepad Recording</string>
+    <string name="resume_recording_button">暂停录音</string>
+
+    <!-- Preferences -->
+    <string name="pref_high_quality_key">pref_high_quality</string>
+    <string name="pref_high_quality_title">Enable High Quality Recording</string>
+    <string name="pref_high_quality_desc">Record in CD Quality</string>
+    <string name="pref_about_key">pref_about</string>
+    <string name="pref_about_title">About</string>
+    <string name="pref_about_desc">v%s</string>
+
+    <!--dialog-->
+    <string name="send_to">Send To</string>
+    <string name="dialog_action_cancel">取消</string>
+    <string name="dialog_title_options">设置</string>
 </resources>

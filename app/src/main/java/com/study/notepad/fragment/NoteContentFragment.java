@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -74,8 +75,9 @@ public class NoteContentFragment extends Fragment {
         mRecycler = v.findViewById(R.id.frag_main_content);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         mRecycler.setLayoutManager(linearLayoutManager);
-        mAdapter = new NoteContentAdapter();
+        mAdapter = new NoteContentAdapter(getActivity());
         mAdapter.addModel(mTestModel1);
         mRecycler.setAdapter(mAdapter);
+        mRecycler.setItemAnimator(new DefaultItemAnimator());
     }
 }

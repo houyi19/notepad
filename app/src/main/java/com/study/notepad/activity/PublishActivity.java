@@ -12,9 +12,8 @@ import com.orhanobut.logger.Logger;
 import com.study.notepad.R;
 import com.study.notepad.bean.NoteBean;
 import com.study.notepad.util.DataBaseUtil;
+import com.study.notepad.util.DateUtil;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Author by bier
@@ -54,9 +53,9 @@ public class PublishActivity extends AppCompatActivity implements View.OnClickLi
         switch (view.getId()) {
             case R.id.act_publish_btn:
                 long time = System.currentTimeMillis();
-                dataTime = timeStamp2Date(String.valueOf(time / 1000), "yyyy-MM-dd HH:mm:ss");
+                dataTime = DateUtil.timeStamp2Date(String.valueOf(time / 1000), "yyyy-MM-dd HH:mm:ss");
                 mPicUrl = null;
-                NoteBean noteBean = new NoteBean(mContent.getText().toString(), mPicUrl, dataTime);
+                NoteBean noteBean = new NoteBean(mContent.getText().toString(), mPicUrl, dataTime,0);
                 Logger.i(noteBean.toString());
                 DataBaseUtil dataBaseUtil = new DataBaseUtil(this);
                 dataBaseUtil.addContent(noteBean);
@@ -64,15 +63,5 @@ public class PublishActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    //    转换成日期时间yyyy-MM-dd HH:mm:ss;
-    public String timeStamp2Date(String seconds, String format) {
-        if (seconds == null || seconds.isEmpty() || seconds.equals("null")) {
-            return "";
-        }
-        if (format == null || format.isEmpty()) {
-            format = "yyyy-MM-dd HH:mm:ss";
-        }
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
-        return sdf.format(new Date(Long.valueOf(seconds + "000")));
-    }
+
 }

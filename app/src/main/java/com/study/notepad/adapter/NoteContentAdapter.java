@@ -2,6 +2,7 @@ package com.study.notepad.adapter;
 
 
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,7 @@ import android.view.ViewGroup;
 import com.orhanobut.logger.Logger;
 import com.study.notepad.R;
 import com.study.notepad.adapter.holders.HolderCharPicNote;
-import com.study.notepad.adapter.holders.HolderTest;
+import com.study.notepad.adapter.holders.HolderSpeechNote;
 import com.study.notepad.base.HolderBase;
 import com.study.notepad.bean.NoteBean;
 
@@ -22,9 +23,11 @@ import java.util.ArrayList;
 public class NoteContentAdapter extends RecyclerViewAdapter {
 
     private ArrayList<NoteBean> mAllmodels;
+    private FragmentActivity mActivty;
 
-    public NoteContentAdapter() {
+    public NoteContentAdapter(FragmentActivity mActivty) {
         mAllmodels = new ArrayList<>();
+        this.mActivty = mActivty;
     }
 
     public void addModel(ArrayList<NoteBean> model) {
@@ -47,7 +50,8 @@ public class NoteContentAdapter extends RecyclerViewAdapter {
             v = inflater.inflate(R.layout.holder_char_note_item, viewGroup, false);
             holderBase = new HolderCharPicNote(v);
         } else if (i == NoteType.SPEECH_NOTE) {
-            return null;
+            v = inflater.inflate(R.layout.holder_speech_note, viewGroup, false);
+            holderBase = new HolderSpeechNote(v);
         }
         return holderBase;
     }
@@ -56,6 +60,8 @@ public class NoteContentAdapter extends RecyclerViewAdapter {
     public void onBindViewHolder(@NonNull HolderBase holderBase, int i) {
         if (holderBase instanceof HolderCharPicNote) {
             ((HolderCharPicNote) holderBase).bindHolder(mAllmodels.get(i));
+        } else if (holderBase instanceof HolderSpeechNote) {
+            ((HolderSpeechNote) holderBase).bindHolder(mAllmodels.get(i),mActivty);
         }
     }
 
@@ -72,7 +78,13 @@ public class NoteContentAdapter extends RecyclerViewAdapter {
 
     @Override
     public int getItemViewType(int position) {
-//        TODO:测试数据均为int型
-        return NoteType.CHAR_PICTURE_NOTE;
+        if (!mAllmodels.isEmpty()) {
+            if (mAllmodels.get(position).getType() + 1 == NoteType.CHAR_PICTURE_NOTE) {
+                return NoteType.CHAR_PICTURE_NOTE;
+            } else {
+                return NoteType.SPEECH_NOTE;
+            }
+        }
+        return -1;
     }
 }
