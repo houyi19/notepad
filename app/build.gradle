@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.study.notepad"
-        minSdkVersion 25
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -37,9 +37,9 @@ dependencies {
 
 
     //知乎图片选择 https://github.com/zhihu/Matisse
-    implementation 'com.zhihu.android:matisse:0.5.2-beta4'
-    // 第三方添加图片的控件
-//    implementation 'me.zhouzhuo.zzimagebox:zz-image-box:1.1.1'
+    implementation ('com.zhihu.android:matisse:0.5.2-beta4') {
+        exclude group: 'com.android.support'
+    }
 
     //利用RXjava 进行图片html的解析；
     implementation "io.reactivex.rxjava2:rxjava:2.2.3"
