@@ -6,11 +6,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.support.v4.content.FileProvider;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
 import com.study.notepad.R;
+import com.study.notepad.adapter.NoteContentAdapter;
 import com.study.notepad.bean.NoteBean;
 import com.study.notepad.util.DataBaseUtil;
 import com.study.notepad.util.onNoteDataChangeListener;
@@ -28,7 +34,7 @@ public class BaseFileDialog {
         return dialog;
     }
 
-    public void createBaseDialog(final Context mContext, final NoteBean noteBean , final int pos) {
+    public void createBaseDialog(final Context mContext, final NoteBean noteBean, final int pos) {
 
         ArrayList<String> entrys = new ArrayList<String>();
         entrys.add("分享文件");
@@ -45,9 +51,9 @@ public class BaseFileDialog {
                 if (item == 0) {
                     startShareFileDialog(mContext, noteBean);
                 } else if (item == 1) {
-                    startDeleteFileDialog(mContext,noteBean,pos);
+                    startDeleteFileDialog(mContext, noteBean, pos);
                 } else if (item == 2) {
-//                    TODO 重命名文件
+                    startRenameFile(mContext,noteBean,pos);
                 }
             }
         });
@@ -64,7 +70,7 @@ public class BaseFileDialog {
     }
 
     //    具体分享内容
-    public void startShareFileDialog(Context mContext, NoteBean noteBean) {
+    private void startShareFileDialog(Context mContext, NoteBean noteBean) {
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
         Uri fileUri = FileProvider.getUriForFile(mContext, "com.study.notepad.fileprovider", new File(noteBean.getmFilePath()));
@@ -78,7 +84,7 @@ public class BaseFileDialog {
         mContext.startActivity(Intent.createChooser(shareIntent, mContext.getText(R.string.send_to)));
     }
 
-    public void startDeleteFileDialog (final Context mContext, final NoteBean noteBean, final int pos) {
+    private void startDeleteFileDialog(final Context mContext, final NoteBean noteBean, final int pos) {
         // File delete confirm
         AlertDialog.Builder confirmDelete = new AlertDialog.Builder(mContext);
         confirmDelete.setTitle(mContext.getString(R.string.dialog_title_delete));
@@ -89,7 +95,7 @@ public class BaseFileDialog {
                     public void onClick(DialogInterface dialog, int id) {
                         try {
                             //删掉文件从数据，本地地方，以及通过recycleView刷新机制来通知数据减少
-                            remove(mContext,noteBean,pos);
+                            remove(mContext, noteBean, pos);
 
                         } catch (Exception e) {
                             Logger.e("exception", e);
@@ -109,7 +115,7 @@ public class BaseFileDialog {
         alert.show();
     }
 
-    public void remove(Context mContext,NoteBean noteBean,int pos){
+    private void remove(Context mContext, NoteBean noteBean, int pos) {
         //delete file from storage
         File file = new File(noteBean.getmFilePath());
         file.delete();
@@ -125,11 +131,72 @@ public class BaseFileDialog {
 
         DataBaseUtil dataBaseUtil = new DataBaseUtil(mContext);
         Logger.i(String.valueOf(noteBean.getmId()));
-        dataBaseUtil.delSpeechContent(noteBean.getmId());
+        dataBaseUtil.delSpeechContent(noteBean.getmId(),pos);
     }
 
+    //    重命名文件；
+    private void startRenameFile(final Context mContext, final NoteBean noteBean, final int pos) {
 
+        // File rename dialog
+        AlertDialog.Builder renameFileBuilder = new AlertDialog.Builder(mContext);
 
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        View view = inflater.inflate(R.layout.dialog_rename_file, null);
+
+        final EditText input = (EditText) view.findViewById(R.id.new_name);
+
+        renameFileBuilder.setTitle(mContext.getString(R.string.dialog_title_rename));
+        renameFileBuilder.setCancelable(true);
+        renameFileBuilder.setPositiveButton(mContext.getString(R.string.dialog_action_ok),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        try {
+                            String value = input.getText().toString().trim() + ".mp4";
+                            Logger.i(String.valueOf(noteBean.getmId()));
+                            rename(value,mContext,noteBean,pos);
+
+                        } catch (Exception e) {
+                            Logger.e("exception", e);
+                        }
+
+                        dialog.cancel();
+                    }
+                });
+        renameFileBuilder.setNegativeButton(mContext.getString(R.string.dialog_action_cancel),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        renameFileBuilder.setView(view);
+        AlertDialog alert = renameFileBuilder.create();
+        alert.show();
+    }
+
+    //    重命名具体操作方法；
+    private void rename(String name, Context mContext, NoteBean noteBean, int pos) {
+        //rename a file
+
+        String mFilePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+        mFilePath += "/notePadRecorder/" + name;
+        File f = new File(mFilePath);
+
+        if (f.exists() && !f.isDirectory()) {
+            //file name is not unique, cannot rename file.
+            Toast.makeText(mContext,
+                    String.format(mContext.getString(R.string.toast_file_exists), name),
+                    Toast.LENGTH_SHORT).show();
+
+        } else {
+            //file name is unique, rename file
+            File oldFilePath = new File(noteBean.getmFilePath());
+            Logger.i(String.valueOf(oldFilePath));
+            oldFilePath.renameTo(f);
+            DataBaseUtil dataBaseUtil = new DataBaseUtil(mContext);
+            dataBaseUtil.updateSpeechContent(noteBean, name, mFilePath, pos);
+        }
+    }
 
 
 }

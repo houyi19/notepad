@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.orhanobut.logger.Logger;
 import com.study.notepad.bean.NoteBean;
 
 import java.util.ArrayList;
@@ -18,9 +19,14 @@ public class DataBaseUtil {
 
     private Context mContext;
     private DatabaseHelper dbHelper;
+    private static onNoteDataChangeListener mOnDatabaseChangedListener;
 
     public DataBaseUtil(Context mContext) {
         this.mContext = mContext;
+    }
+
+    public static void setmOnDatabaseChangedListener(onNoteDataChangeListener mOnDatabaseChangedListener) {
+        DataBaseUtil.mOnDatabaseChangedListener = mOnDatabaseChangedListener;
     }
 
     //    查询数据
@@ -109,17 +115,35 @@ public class DataBaseUtil {
         return listItem;
     }
 
-    //    TODO 删除语音数据
-    public void delSpeechContent(int id) {
+    //    删除语音数据
+    public void delSpeechContent(int id, int pos) {
         dbHelper = DatabaseHelper.gwtInstance(mContext);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String[] whereArgs = {String.valueOf(id)};
+        Logger.i(String.valueOf(id));
         db.delete("saved_recordings", "_ID=?", whereArgs);
+        if (mOnDatabaseChangedListener != null) {
+            mOnDatabaseChangedListener.onNewDatabaseEntryDelete(pos);
+        }
+        db.close();
     }
 
-    // TODO 更新语音数据
-    public void updateSpeechContent() {
+    // 更新语音数据
+    public void updateSpeechContent(NoteBean noteBean, String name, String filepath, int pos) {
+        dbHelper = DatabaseHelper.gwtInstance(mContext);
+        noteBean.setmFilePath(filepath);
+        noteBean.setmName(name);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("recording_name", noteBean.getmName());
+        cv.put("file_path", noteBean.getmFilePath());
+        db.update("saved_recordings", cv,
+                "_id" + "=" + noteBean.getmId(), null);
 
+        if (mOnDatabaseChangedListener != null) {
+            mOnDatabaseChangedListener.onDatabaseEntryRenamed(pos);
+        }
+        db.close();
     }
 
     //   读取已经插入的语音数据

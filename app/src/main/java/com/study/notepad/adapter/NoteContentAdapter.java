@@ -13,6 +13,7 @@ import com.study.notepad.adapter.holders.HolderCharPicNote;
 import com.study.notepad.adapter.holders.HolderSpeechNote;
 import com.study.notepad.base.HolderBase;
 import com.study.notepad.bean.NoteBean;
+import com.study.notepad.util.DataBaseUtil;
 import com.study.notepad.util.onNoteDataChangeListener;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import java.util.ArrayList;
  * Author by bier
  * Date on 2019/3/23.
  **/
-public class NoteContentAdapter extends RecyclerViewAdapter  implements onNoteDataChangeListener {
+public class NoteContentAdapter extends RecyclerViewAdapter implements onNoteDataChangeListener {
 
     private ArrayList<NoteBean> mAllmodels;
     private FragmentActivity mActivty;
@@ -29,6 +30,7 @@ public class NoteContentAdapter extends RecyclerViewAdapter  implements onNoteDa
     public NoteContentAdapter(FragmentActivity mActivty) {
         mAllmodels = new ArrayList<>();
         this.mActivty = mActivty;
+        DataBaseUtil.setmOnDatabaseChangedListener(this);
     }
 
     public void addModel(ArrayList<NoteBean> model) {
@@ -62,7 +64,7 @@ public class NoteContentAdapter extends RecyclerViewAdapter  implements onNoteDa
         if (holderBase instanceof HolderCharPicNote) {
             ((HolderCharPicNote) holderBase).bindHolder(mAllmodels.get(i));
         } else if (holderBase instanceof HolderSpeechNote) {
-            ((HolderSpeechNote) holderBase).bindHolder(mAllmodels.get(i),mActivty,i);
+            ((HolderSpeechNote) holderBase).bindHolder(mAllmodels.get(i), mActivty, i);
         }
     }
 
@@ -89,8 +91,16 @@ public class NoteContentAdapter extends RecyclerViewAdapter  implements onNoteDa
         return -1;
     }
 
+
     @Override
-    public void onNotiyRefresh(int pos) {
+    public void onNewDatabaseEntryDelete(int pos) {
+        Logger.i("entry delete pos:" + String.valueOf(pos));
+        notifyItemChanged(pos);
+    }
+
+    @Override
+    public void onDatabaseEntryRenamed(int pos) {
+        Logger.i("entry renamed pos:" + String.valueOf(pos));
         notifyItemChanged(pos);
     }
 }
