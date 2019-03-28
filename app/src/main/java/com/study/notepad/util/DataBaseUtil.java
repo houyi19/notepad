@@ -54,7 +54,7 @@ public class DataBaseUtil {
         return listItem;
     }
 
-    //    添加数据 FIXME 主键值不会自增;
+    //    添加数据
     public void addContent(NoteBean noteBean) {
         dbHelper = DatabaseHelper.gwtInstance(mContext);
         SQLiteDatabase db = dbHelper.getWritableDatabase();

@@ -128,7 +128,7 @@ public class PublishActivity extends AppCompatActivity {
     }
 
 
-//    FIXME 以后开启编辑功能；
+    //    FIXME 以后开启编辑功能；
     private void dealWithContent() {
         //showEditData(note.getContent());
         mPublishcontent.clearAllLayout();
@@ -291,7 +291,7 @@ public class PublishActivity extends AppCompatActivity {
         String noteContent = getEditData();
         String noteTime = mPublishtime.getText().toString();
 
-        note = new NoteBean(0,noteTitle,noteContent,null,noteTime,0);
+        note = new NoteBean(0, noteTitle, noteContent, null, noteTime, 0);
         Logger.i(String.valueOf(note));
 
         //新建笔记
@@ -395,12 +395,10 @@ public class PublishActivity extends AppCompatActivity {
                         Bitmap bitmap = ImageUtils.getSmallBitmap(imagePath, screenWidth, screenHeight);//压缩图片
                         //bitmap = BitmapFactory.decodeFile(imagePath);
                         imagePath = SDCardUtils.saveToSdCard(bitmap);
-                        //Log.e(TAG, "###imagePath="+imagePath);
+                        Logger.e("###imagePath=" + imagePath);
                         emitter.onNext(imagePath);
                     }
 
-                    // 测试插入网络图片 http://p695w3yko.bkt.clouddn.com/18-5-5/44849367.jpg
-                    //subscriber.onNext("http://p695w3yko.bkt.clouddn.com/18-5-5/30271511.jpg");
 
                     emitter.onComplete();
                 } catch (Exception e) {

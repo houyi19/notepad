@@ -178,9 +178,9 @@ public class PublishSpeechActivity extends AppCompatActivity implements View.OnC
     protected void onPause() {
         super.onPause();
         Logger.i("onPause");
-        //录音过程中如果突然退出的话需要中断录音；
-        onRecord(mStartRecording);
-        mStartRecording = !mStartRecording;
+        // FIXME 录音过程中如果突然退出的话需要中断录音；
+//        onRecord(mStartRecording);
+//        mStartRecording = !mStartRecording;
     }
 
 }
