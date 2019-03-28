@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -52,7 +53,9 @@ public class PermissionGuideUtil implements onRequestPermission {
 
     @Override
     public void grantPermissionResult(Activity mAct, int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        mAct.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mAct.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
         switch (requestCode) {
             case RESULT_CODE:
                 break;

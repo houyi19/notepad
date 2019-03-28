@@ -38,11 +38,12 @@ public class DataBaseUtil {
         Cursor cursor = db.rawQuery("select * from note", null);
         if (cursor != null && cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
+                int id = cursor.getInt(0);
                 String title = cursor.getString(1);
                 String content = cursor.getString(2);
                 String picUrl = cursor.getString(3);
                 String time = cursor.getString(4);
-                NoteBean bean = new NoteBean(title, content, picUrl, time, 0);
+                NoteBean bean = new NoteBean(id, title, content, picUrl, time, 0);
                 listItem.add(bean);
             }
         }
@@ -68,8 +69,17 @@ public class DataBaseUtil {
     }
 
     //    TODO 删除数据
-    public void delContent() {
+    public void delContent(int id, int pos) {
+        dbHelper = DatabaseHelper.gwtInstance(mContext);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String[] whereArgs = {String.valueOf(id)};
+        Logger.i(String.valueOf(id));
+        db.delete("note", " id=?", whereArgs);
 
+        if (mOnDatabaseChangedListener != null) {
+            mOnDatabaseChangedListener.onNewDatabaseEntryDelete(pos);
+        }
+        db.close();
     }
 
     // TODO 更新数据
@@ -100,11 +110,12 @@ public class DataBaseUtil {
         Cursor cursor = db.rawQuery("select * from saved_recordings", null);
         if (cursor != null && cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
+                int mId = cursor.getInt(0);
                 String content = cursor.getString(1);
                 String file_path = cursor.getString(2);
                 long length = cursor.getLong(3);
                 String time = cursor.getString(4);
-                NoteBean bean = new NoteBean(content, file_path, length, time, 1);
+                NoteBean bean = new NoteBean(mId, content, file_path, length, time, 1);
                 listItem.add(bean);
             }
         }

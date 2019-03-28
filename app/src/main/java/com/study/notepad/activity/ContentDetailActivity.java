@@ -61,7 +61,7 @@ public class ContentDetailActivity extends AppCompatActivity {
         });
 
         NoteBean res = (NoteBean) getIntent().getSerializableExtra("noteBean");
-        mTime = findViewById(R.id.tv_note_title);
+        mTime = findViewById(R.id.tv_note_time);
         mTime.setText(res.getTime());
         mTitle = findViewById(R.id.tv_note_title);
         mTitle.setText(res.getTitle());

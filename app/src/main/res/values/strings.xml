@@ -30,6 +30,7 @@
     <string name="dialog_action_no">No</string>
     <string name="dialog_title_delete">确认删除...</string>
     <string name="dialog_text_delete">确认删除该文件吗?</string>
+    <string name="dialog_text_char_delete">确认删除该内容吗</string>
     <string name="dialog_title_rename">重命名文件</string>
 
 

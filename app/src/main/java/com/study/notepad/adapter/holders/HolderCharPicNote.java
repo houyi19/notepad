@@ -4,6 +4,7 @@ import com.study.notepad.R;
 import com.study.notepad.activity.ContentDetailActivity;
 import com.study.notepad.base.HolderBase;
 import com.study.notepad.bean.NoteBean;
+import com.study.notepad.dialog.BaseFileDialog;
 
 import android.content.Context;
 import android.content.Intent;
@@ -30,8 +31,8 @@ public class HolderCharPicNote extends HolderBase<NoteBean> implements View.OnCl
         mContext = itemView.getContext();
     }
 
-    @Override
-    public void bindHolder(final NoteBean noteBean) {
+
+    public void bindHolder(final NoteBean noteBean,final int pos) {
         super.bindHolder(noteBean);
         mContent.setText(noteBean.getContent());
         mTime.setText(noteBean.getTime());
@@ -44,6 +45,13 @@ public class HolderCharPicNote extends HolderBase<NoteBean> implements View.OnCl
                 i.putExtra("noteBean",noteBean);
                 mContext.startActivity(i);
 
+            }
+        });
+        mContentContainer.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                BaseFileDialog.newInstance().createBaseDialog(mContext,noteBean,pos);
+                return false;
             }
         });
     }

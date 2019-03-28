@@ -19,6 +19,7 @@ import com.study.notepad.R;
 import com.study.notepad.adapter.NoteContentAdapter;
 import com.study.notepad.bean.NoteBean;
 import com.study.notepad.util.DataBaseUtil;
+import com.study.notepad.util.DisplayUtil;
 import com.study.notepad.util.onNoteDataChangeListener;
 
 import java.io.File;
@@ -39,24 +40,38 @@ public class BaseFileDialog {
         ArrayList<String> entrys = new ArrayList<String>();
         entrys.add("分享文件");
         entrys.add("删除文件");
-        entrys.add("重命名文件");
+        if (noteBean.getType() == 1) {
+            entrys.add("重命名文件");
+        }
 
         final CharSequence[] items = entrys.toArray(new CharSequence[entrys.size()]);
 
         // File delete confirm
         AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
         builder.setTitle(mContext.getString(R.string.dialog_title_options));
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int item) {
-                if (item == 0) {
-                    startShareFileDialog(mContext, noteBean);
-                } else if (item == 1) {
-                    startDeleteFileDialog(mContext, noteBean, pos);
-                } else if (item == 2) {
-                    startRenameFile(mContext,noteBean,pos);
+        if (noteBean.getType() == 0) {
+            builder.setItems(items, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int item) {
+                    if (item == 0) {
+                        DisplayUtil.shareTextAndImage(mContext, noteBean.getTitle(), noteBean.getContent(), null);
+                    } else if (item == 1) {
+                        startDeleteCharDialog(mContext, noteBean, pos);
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            builder.setItems(items, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int item) {
+                    if (item == 0) {
+                        startShareFileDialog(mContext, noteBean);
+                    } else if (item == 1) {
+                        startDeleteFileDialog(mContext, noteBean, pos);
+                    } else if (item == 2) {
+                        startRenameFile(mContext, noteBean, pos);
+                    }
+                }
+            });
+        }
         builder.setCancelable(true);
         builder.setNegativeButton(mContext.getString(R.string.dialog_action_cancel),
                 new DialogInterface.OnClickListener() {
@@ -82,6 +97,39 @@ public class BaseFileDialog {
         }
         shareIntent.setType("audio/mp4");
         mContext.startActivity(Intent.createChooser(shareIntent, mContext.getText(R.string.send_to)));
+    }
+
+    //删除图文内容;
+    private void startDeleteCharDialog(final Context mContext, final NoteBean noteBean, final int pos) {
+        AlertDialog.Builder confirmDelete = new AlertDialog.Builder(mContext);
+        confirmDelete.setTitle(mContext.getString(R.string.dialog_title_delete));
+        confirmDelete.setMessage(mContext.getString(R.string.dialog_text_char_delete));
+        confirmDelete.setCancelable(true);
+        confirmDelete.setPositiveButton(mContext.getString(R.string.dialog_action_yes),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        try {
+                            //删掉内容从数据，本地地方，以及通过recycleView刷新机制来通知数据减少
+                            DataBaseUtil dataBaseUtil = new DataBaseUtil(mContext);
+                            Logger.i("delete speech id :" + noteBean.getId());
+                            dataBaseUtil.delContent(noteBean.getId(), pos);
+
+                        } catch (Exception e) {
+                            Logger.e("exception", e);
+                        }
+
+                        dialog.cancel();
+                    }
+                });
+        confirmDelete.setNegativeButton(mContext.getString(R.string.dialog_action_no),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert = confirmDelete.create();
+        alert.show();
     }
 
     private void startDeleteFileDialog(final Context mContext, final NoteBean noteBean, final int pos) {
@@ -131,7 +179,7 @@ public class BaseFileDialog {
 
         DataBaseUtil dataBaseUtil = new DataBaseUtil(mContext);
         Logger.i(String.valueOf(noteBean.getmId()));
-        dataBaseUtil.delSpeechContent(noteBean.getmId(),pos);
+        dataBaseUtil.delSpeechContent(noteBean.getmId(), pos);
     }
 
     //    重命名文件；
@@ -153,7 +201,7 @@ public class BaseFileDialog {
                         try {
                             String value = input.getText().toString().trim() + ".mp4";
                             Logger.i(String.valueOf(noteBean.getmId()));
-                            rename(value,mContext,noteBean,pos);
+                            rename(value, mContext, noteBean, pos);
 
                         } catch (Exception e) {
                             Logger.e("exception", e);

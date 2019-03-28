@@ -135,7 +135,7 @@ public class RecordingService extends Service {
 
         try {
             String dataTime = DateUtil.timeStamp2Date(String.valueOf(System.currentTimeMillis() / 1000), "yyyy-MM-dd HH:mm:ss");
-            NoteBean noteBean = new NoteBean(mFileName, mFilePath, mElapsedMillis, dataTime, 1);
+            NoteBean noteBean = new NoteBean(0,mFileName, mFilePath, mElapsedMillis, dataTime, 1);
             mDatabase.addSpeechContent(noteBean);
 
         } catch (Exception e) {

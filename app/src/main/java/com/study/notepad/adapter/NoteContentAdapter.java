@@ -62,7 +62,7 @@ public class NoteContentAdapter extends RecyclerViewAdapter implements onNoteDat
     @Override
     public void onBindViewHolder(@NonNull HolderBase holderBase, int i) {
         if (holderBase instanceof HolderCharPicNote) {
-            ((HolderCharPicNote) holderBase).bindHolder(mAllmodels.get(i));
+            ((HolderCharPicNote) holderBase).bindHolder(mAllmodels.get(i),i);
         } else if (holderBase instanceof HolderSpeechNote) {
             ((HolderSpeechNote) holderBase).bindHolder(mAllmodels.get(i), mActivty, i);
         }
@@ -95,7 +95,9 @@ public class NoteContentAdapter extends RecyclerViewAdapter implements onNoteDat
     @Override
     public void onNewDatabaseEntryDelete(int pos) {
         Logger.i("entry delete pos:" + String.valueOf(pos));
-        notifyItemChanged(pos);
+        //需要删除缓存中指定的内容；
+        mAllmodels.remove(pos);
+        notifyItemRemoved(pos);
     }
 
     @Override

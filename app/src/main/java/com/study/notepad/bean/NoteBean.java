@@ -30,7 +30,8 @@ public class NoteBean implements Serializable {
     private long mLength; // length of recording in seconds
     private String mTime; // date/time of the recording
 
-    public NoteBean(String title,String content, String picUrl, String time, int type) {
+    public NoteBean(int id,String title,String content, String picUrl, String time, int type) {
+        this.id = id;
         this.title = title;
         this.content = content;
         this.picUrl = picUrl;
@@ -38,7 +39,8 @@ public class NoteBean implements Serializable {
         this.type = type;
     }
 
-    public NoteBean(String mName, String mFilePath, long mLength, String mTime, int type) {
+    public NoteBean(int mId,String mName, String mFilePath, long mLength, String mTime, int type) {
+        this.mId = mId;
         this.mName = mName;
         this.mFilePath = mFilePath;
         this.mLength = mLength;

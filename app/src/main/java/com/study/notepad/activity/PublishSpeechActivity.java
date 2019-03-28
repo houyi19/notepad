@@ -166,4 +166,21 @@ public class PublishSpeechActivity extends AppCompatActivity implements View.OnC
             mChronometer.start();
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Logger.i("onResume");
+        //录音过程中再次进入的话；
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Logger.i("onPause");
+        //录音过程中如果突然退出的话需要中断录音；
+        onRecord(mStartRecording);
+        mStartRecording = !mStartRecording;
+    }
+
 }

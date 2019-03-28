@@ -291,7 +291,7 @@ public class PublishActivity extends AppCompatActivity {
         String noteContent = getEditData();
         String noteTime = mPublishtime.getText().toString();
 
-        note = new NoteBean(noteTitle,noteContent,null,noteTime,0);
+        note = new NoteBean(0,noteTitle,noteContent,null,noteTime,0);
         Logger.i(String.valueOf(note));
 
         //新建笔记
