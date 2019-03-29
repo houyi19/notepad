@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -34,6 +36,7 @@ public class ContentDetailActivity extends AppCompatActivity {
     private TextView mTime;//笔记创建时间
 
     private String mFinalContent;
+    private NoteBean res;
     private ProgressDialog loadingDialog;
     private Disposable mDisposable;
 
@@ -43,6 +46,25 @@ public class ContentDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_content_detail);
         Logger.i("onCreate");
         InitView();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_edit, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_edit_text:
+                Intent i = new Intent(this, PublishActivity.class);
+                i.putExtra("noteBean", res);
+                i.putExtra("isEdit",true);
+                startActivity(i);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void InitView() {
@@ -60,7 +82,7 @@ public class ContentDetailActivity extends AppCompatActivity {
             }
         });
 
-        NoteBean res = (NoteBean) getIntent().getSerializableExtra("noteBean");
+        res = (NoteBean) getIntent().getSerializableExtra("noteBean");
         mTime = findViewById(R.id.tv_note_time);
         mTime.setText(res.getTime());
         mTitle = findViewById(R.id.tv_note_title);

@@ -82,9 +82,18 @@ public class DataBaseUtil {
         db.close();
     }
 
-    // TODO 更新数据
-    public void updateContent() {
-
+    // 更新数据
+    public void updateContent(NoteBean noteBean) {
+        dbHelper = DatabaseHelper.gwtInstance(mContext);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Logger.i(String.valueOf(noteBean));
+        ContentValues cv = new ContentValues();
+        cv.put("title",noteBean.getTitle());
+        cv.put("content",noteBean.getContent());
+        cv.put("time",noteBean.getTime());
+        db.update("note", cv,
+                " id" + "=" + noteBean.getId(), null);
+        db.close();
     }
 
     //   添加语音数据

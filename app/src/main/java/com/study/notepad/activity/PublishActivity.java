@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.orhanobut.logger.Logger;
 import com.sendtion.xrichtext.RichTextEditor;
+import com.study.notepad.NoteMainActivity;
 import com.study.notepad.R;
 import com.study.notepad.bean.NoteBean;
 import com.study.notepad.util.DataBaseUtil;
@@ -66,6 +67,8 @@ public class PublishActivity extends AppCompatActivity {
     private String myContent;
     private String myGroupName;
     private String myNoteTime;
+    //判断是否可以编辑，true为可编辑，false为不可以编辑；
+    private boolean isEdit;
 
     private static final int cutTitleLength = 20;//截取的标题长度
 
@@ -121,9 +124,34 @@ public class PublishActivity extends AppCompatActivity {
         mGroup.setText("默认笔记");
 
         openSoftKeyInput();//打开软键盘显示
-        setTitle("新建笔记");
-        myNoteTime = DateUtil.date2string(new Date());
-        mPublishtime.setText(myNoteTime);
+
+        isEdit = getIntent().getBooleanExtra("isEdit", false);
+        if (isEdit) {
+            setTitle("编辑笔记");
+            note = (NoteBean) getIntent().getSerializableExtra("noteBean");
+
+            loadingDialog = new ProgressDialog(this);
+            loadingDialog.setMessage("数据加载中...");
+            loadingDialog.setCanceledOnTouchOutside(false);
+            loadingDialog.show();
+            myNoteTime = note.getTime();
+            myTitle = note.getTitle();
+            myContent = note.getContent();
+
+            mPublihTitle.setText(myTitle);
+            mPublishtime.setText(myNoteTime);
+            mPublishcontent.post(new Runnable() {
+                @Override
+                public void run() {
+                    dealWithContent();
+                }
+            });
+
+        } else {
+            setTitle("新建笔记");
+            myNoteTime = DateUtil.date2string(new Date());
+            mPublishtime.setText(myNoteTime);
+        }
 
     }
 
@@ -291,21 +319,36 @@ public class PublishActivity extends AppCompatActivity {
         String noteContent = getEditData();
         String noteTime = mPublishtime.getText().toString();
 
-        note = new NoteBean(0, noteTitle, noteContent, null, noteTime, 0);
-        Logger.i(String.valueOf(note));
+        DataBaseUtil dataBaseUtil = new DataBaseUtil(getApplicationContext());
 
-        //新建笔记
-        if (noteTitle.length() == 0 && noteContent.length() == 0) {
-            if (!isBackground) {
-                Toast.makeText(PublishActivity.this, "请输入标题内容", Toast.LENGTH_SHORT).show();
+        if (isEdit) {
+             // 编辑笔记
+            if (!noteTitle.equals(myTitle) || !noteContent.equals(myContent)
+                    ||  !noteTime.equals(myNoteTime)) {
+                note.setTime(noteTime);
+                note.setContent(noteContent);
+                note.setTitle(noteTitle);
+                dataBaseUtil.updateContent(note);
             }
+            if (!isBackground){
+                Intent i = new Intent(this,NoteMainActivity.class);
+                startActivity(i);
+            }
+
         } else {
-            if (!isBackground) {
-                DataBaseUtil dataBaseUtil = new DataBaseUtil(getApplicationContext());
-                dataBaseUtil.addContent(note);
-                Intent intent = new Intent();
-                setResult(RESULT_OK, intent);
-                finish();
+            //新建笔记
+            note = new NoteBean(0, noteTitle, noteContent, null, noteTime, 0);
+            if (noteTitle.length() == 0 && noteContent.length() == 0) {
+                if (!isBackground) {
+                    Toast.makeText(PublishActivity.this, "请输入标题内容", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                if (!isBackground) {
+                    dataBaseUtil.addContent(note);
+                    Intent intent = new Intent();
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
             }
         }
     }
@@ -473,9 +516,19 @@ public class PublishActivity extends AppCompatActivity {
             String noteTitle = mPublihTitle.getText().toString();
             String noteContent = getEditData();
             String noteTime = mPublishtime.getText().toString();
-            if (noteTitle.length() > 0 || noteContent.length() > 0) {
-                saveNoteData(false);
+            if (isEdit) {
+                //编辑笔记
+                if (!noteTitle.equals(myTitle) || !noteTime.equals(myNoteTime) || !noteContent.equals(myContent)) {
+                    saveNoteData(false);
+                }
+
+            } else {
+                //新建笔记
+                if (noteTitle.length() > 0 || noteContent.length() > 0) {
+                    saveNoteData(false);
+                }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

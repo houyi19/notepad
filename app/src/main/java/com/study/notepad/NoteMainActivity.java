@@ -49,6 +49,7 @@ public class NoteMainActivity extends AppCompatActivity implements View.OnClickL
         switch (view.getId()) {
             case R.id.add_char_content:
                 Intent i = new Intent(this, PublishActivity.class);
+                i.putExtra("isEdit",false);
                 startActivity(i);
                 break;
             case R.id.add_speech_content:
